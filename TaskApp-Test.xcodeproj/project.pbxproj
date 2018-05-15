@@ -61,17 +61,18 @@
 		33272CA720A63D3E005BD973 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A046A26320A25849004C2809 /* LaunchScreen.storyboard */,
 				A046A25E20A25842004C2809 /* Main.storyboard */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		A024544420A42BB900AEA979 /* DataAccess */ = {
+		A024544420A42BB900AEA979 /* DataAccessModel */ = {
 			isa = PBXGroup;
 			children = (
 				A024544520A42D0B00AEA979 /* TaskDao.swift */,
 			);
-			name = DataAccess;
+			name = DataAccessModel;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -99,7 +100,6 @@
 				A046A25A20A25841004C2809 /* AppDelegate.swift */,
 				A046A26C20A364F0004C2809 /* Models */,
 				A046A26120A25849004C2809 /* Assets.xcassets */,
-				A046A26320A25849004C2809 /* LaunchScreen.storyboard */,
 				A046A26620A25849004C2809 /* Info.plist */,
 			);
 			path = "TaskApp-Test";
@@ -109,7 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				33272CA620A63D1D005BD973 /* EntityModels */,
-				A024544420A42BB900AEA979 /* DataAccess */,
+				A024544420A42BB900AEA979 /* DataAccessModel */,
 			);
 			path = Models;
 			sourceTree = "<group>";
