@@ -10,16 +10,22 @@ import Foundation
 
 //===========================================================================================
 public class TaskModel : NSObject {
+    //Se hereda de la clase NSObject para que nuestro TaskModel se comporte como un apuntador
     
-    //                                          Propiedades
+    //Variables o propiedades todas de tipo var ya que cambiaran constantemente
     var intId: Int?
     var strName : String?
     var strDescription : String?
     var intPercentage: Int?
     var done: Bool?
     
-    //                                          Constructores
-    init(name : String, description : String, percentage: Int, done: Bool)
+    //Constructor que inicializa la clase
+    init(
+        name : String,
+        description : String,
+        percentage: Int,
+        done: Bool
+        )
     {
         self.strName = name
         self.strDescription = description
@@ -27,14 +33,19 @@ public class TaskModel : NSObject {
         self.done = done
     }
     
+    
     override init()
     {
-        
+        //Contructor vacio, se usa la palabra reservada override
     }
     
-    func toString() -> String
+    
+    override public var description: String
     {
+        //Se crea una sobrecarga del metodo description para dar una descripción adecuada de
+        //      nuestro objeto.
+        
         return "Title: "  + self.strName! + ", Description: " + self.strDescription!
     }
 }
-
+//==========================================================================================
