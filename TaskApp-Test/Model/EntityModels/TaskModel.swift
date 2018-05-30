@@ -9,7 +9,7 @@
 import Foundation
 
 //===========================================================================================
-public class TaskModel : NSObject {
+public class TaskModel: NSObject {
     //Se hereda de la clase NSObject para que nuestro TaskModel se comporte como un apuntador
     
     //Variables o propiedades todas de tipo var ya que cambiaran constantemente
@@ -17,8 +17,23 @@ public class TaskModel : NSObject {
     var strName : String?
     var strDescription : String?
     var intPercentage: Int?
-    private var _done: Bool?
-    public var Done: Bool?
+    var boolDone: Bool?
+    
+    //Constructor que inicializa la clase
+    init(
+        id: Int,
+        name : String,
+        description : String,
+        percentage: Int,
+        done: Bool
+        )
+    {
+        self.intId = id
+        self.strName = name
+        self.strDescription = description
+        self.intPercentage = percentage
+        self.boolDone = done
+    }
     
     //Constructor que inicializa la clase
     init(
@@ -31,9 +46,8 @@ public class TaskModel : NSObject {
         self.strName = name
         self.strDescription = description
         self.intPercentage = percentage
-        self._done = done
+        self.boolDone = done
     }
-    
     
     override init()
     {

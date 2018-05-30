@@ -11,7 +11,7 @@ import UIKit
 class viewcontTaskList: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private let strCellName: String = "tvcTaskCell"
-    private var task: TaskModel = TaskModel()
+    private var task: taskViewModel = taskViewModel()
     
     @IBOutlet weak var tvTableView: UITableView!
     
@@ -58,13 +58,13 @@ class viewcontTaskList: UIViewController, UITableViewDataSource, UITableViewDele
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
         //Se obtiene la tarea seleccioada para editar mediante su index
-        self.task = TaskDAO.listTasks[indexPath.row]
+        self.task = taskViewModel(task: TaskDAO.listTasks[indexPath.row])
         
         //se obtiene el view controller de destino
         let vcViewControllerDestino: ViewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewControllerTask") as! ViewController
         
         //Se manda la tarea al view controller de destino
-        vcViewControllerDestino.task = self.task
+        vcViewControllerDestino.taskVM = self.task
         
         //Se dispara la navegacion al view controller de Task
         self.navigationController?.pushViewController(vcViewControllerDestino, animated: true)

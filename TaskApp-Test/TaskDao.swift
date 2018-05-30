@@ -27,7 +27,7 @@ public class TaskDAO
     public static func EditTask(task: TaskModel)
     {
         //Extraer la posicion donde se encuentra nuestra tarea
-        let intIndex: Int = TaskDAO.listTasks.index(of: task)!
+        let intIndex: Int = TaskDAO.listTasks.index(where: {$0.intId == task.intId })!
         TaskDAO.listTasks[intIndex] = task
     }
     

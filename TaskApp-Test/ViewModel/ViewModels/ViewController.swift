@@ -10,7 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    var task: TaskModel = TaskModel()
+    var taskVM: taskViewModel?
+    {
+        didSet
+        {
+            BindingControls()
+        }
+    }
+    
     private var boolEdit: Bool = false
     
     @IBOutlet weak var lblTask: UILabel!
@@ -22,20 +29,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var sldrPercentage: UISlider!
     @IBOutlet weak var btnDelete: UIButton!
     
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        if (self.task.intId != nil)
-        {
-            self.boolEdit = true
-            self.btnDelete.isHidden = false
-            BindingControls()
-        }
-        else
-        {
-            self.boolEdit = false
-        }
+        BindingControls()
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,7 +62,6 @@ class ViewController: UIViewController {
     
     //Acción del botón Delete
     @IBAction func btnDeleteActionPresed(_ sender: UIButton)
-        
     {
         DeleteTask()
     }
@@ -87,9 +85,9 @@ class ViewController: UIViewController {
         //Reflejar los cambios en slider y label de porcentaje
         self.sldrPercentage.setValue(Float(intPercentage), animated: true)
         self.lblPercentage.text = Int(self.sldrPercentage.value).description + "%"
-        
     }
     
+    //Cuando el usuario mueve el slider
     @IBAction func sldrAction(_ sender: UISlider)
     {
         //Porcentaje actual de la tarea
@@ -113,27 +111,18 @@ class ViewController: UIViewController {
     
     private func AddNewTask()
     {
-        //Se crea una nueva tarea con los valores de los campos en el view controller
-        let newTask: TaskModel = TaskModel(name: self.tfTitle.text!,
-                                           description: self.tfDescription.text!,
-                                           percentage: Int(self.sldrPercentage.value),
-                                           done: swchDone.isOn)
-       //Se guarda el nuevo task
-        TaskDAO.AddTask(task: newTask)
+        self.taskVM?.AddTask(name: self.tfTitle.text!,
+                     description: self.tfDescription.text,
+                     percentage: Int(self.sldrPercentage.value),
+                     done: swchDone.isOn)
         
         //Crear objeto para mostrar alerta
-        let alert = UIAlertController(title: "TaskApp", message: "The task: " + newTask.strName! + " was created", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "TaskApp", message: "The task: " + (self.taskVM?.strName)! + " was created", preferredStyle: UIAlertControllerStyle.alert)
         
         //Crear accion (boton con un evento o accion) de alerta
         let action  = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default)
         {
             _ in alert.dismiss(animated: true, completion: nil)
-            
-            //Navegagion antigua
-            /*let viewController = self.storyboard?.instantiateViewController(withIdentifier: "viewcontTasksList") as! viewcontTaskList
-             
-             self.present(viewController, animated: true, completion: nil)
-             */
             self.navigationController?.popViewController(animated: true)
         }
         
@@ -144,43 +133,58 @@ class ViewController: UIViewController {
     
     private func EditTask()
     {
-        //Se pasan los valores de los controles a task
-        self.task.strName = self.tfTitle.text
-        self.task.strDescription = self.tfDescription.text
-        self.task.intPercentage = Int(self.sldrPercentage.value)
-        //self.task.done = self.swchDone.isOn
+        taskVM?.EditTask(name: self.tfTitle.text!,
+                        description: self.tfDescription.text,
+                        percentage: Int(self.sldrPercentage.value),
+                        done: swchDone.isOn)
         
-        //Guardar cambios del task editado
-        TaskDAO.EditTask(task: self.task)
-        
-        //Regresa al menú principal
+        //Navegar al menú principal
         self.navigationController?.popViewController(animated: true)
     }
     
     private func DeleteTask()
     {
-        //Elimina la tarea
-        TaskDAO.DeleteTask(task: self.task)
-        
-        //Regresa a el menú principal
+        //Regresa al menú principal
         self.navigationController?.popViewController(animated: true)
     }
     
+    
     private func BindingControls()
     {
-        self.tfTitle.text = self.task.strName
-        self.tfDescription.text = self.task.strDescription
-        self.sldrPercentage.value = Float(self.task.intPercentage!)
-        self.lblPercentage.text = (self.task.intPercentage?.description)! + " %"
         if (
-            self.task.intPercentage == 100
-        )
+            !self.isViewLoaded
+            )
         {
-            self.swchDone.isOn = true
+            return
         }
-        else
+        
+        guard let taskVM = taskVM else {
+            self.taskVM = taskViewModel()
+            return
+        }
+        
+        if (
+            taskVM.intId != nil
+            )
         {
-            self.swchDone.isOn = false
+            boolEdit = true
+            btnDelete.isHidden = false
+    
+            self.tfTitle.text = taskVM.strName
+            self.tfDescription.text = taskVM.strDescription
+            self.sldrPercentage.value = Float((taskVM.intPercentage)!)
+            self.lblPercentage.text = (taskVM.intPercentage?.description)! + " %"
+            
+            if (
+                taskVM.intPercentage == 100
+            )
+            {
+                self.swchDone.isOn = true
+            }
+            else
+            {
+                self.swchDone.isOn = false
+            }
         }
     }
     
