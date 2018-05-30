@@ -63,6 +63,7 @@ class ViewController: UIViewController {
     
     //Acción del botón Delete
     @IBAction func btnDeleteActionPresed(_ sender: UIButton)
+        
     {
         DeleteTask()
     }
@@ -147,7 +148,7 @@ class ViewController: UIViewController {
         self.task.strName = self.tfTitle.text
         self.task.strDescription = self.tfDescription.text
         self.task.intPercentage = Int(self.sldrPercentage.value)
-        self.task.done = self.swchDone.isOn
+        //self.task.done = self.swchDone.isOn
         
         //Guardar cambios del task editado
         TaskDAO.EditTask(task: self.task)
